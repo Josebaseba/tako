@@ -746,12 +746,8 @@
               return;
             }
             cancelAnimationFrame(_this._anim);
-            if (_this._slidedown_height >= _this.breakpoint) {
-              if (_this.options.onRefresh) {
-                return _this.onRefresh();
-              } else {
-                return _this.hide();
-              }
+            if (_this._slidedown_height >= _this.breakpoint && _this.options.onRefresh) {
+              return _this.onRefresh();
             } else {
               return _this.hide();
             }

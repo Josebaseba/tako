@@ -10,8 +10,8 @@ $(function(){
       console.log("LOADED");
       window.puller = Tako.Pull_Refresh("main", {onRefresh:function(){
           setTimeout(function(){
-              alert("Refresh finished");
-              puller.hide()}, 3000);
+              console.log("Refresh finished");
+              puller.hide()}, 1000);
       }});
   });
 

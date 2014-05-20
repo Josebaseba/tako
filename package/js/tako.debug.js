@@ -1,4 +1,4 @@
-/* app v1.1.2 - 20/05/2014
+/* app v0.1.1 - 21/05/2014
    http://josebaseba.com
    Copyright (c) 2014 Joseba Legarreta | @josebaseba - Under MIT License */
 (function() {

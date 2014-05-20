@@ -708,9 +708,6 @@
     if (options == null) {
       options = {};
     }
-    options.pullLabel = options.pullLabel || "";
-    options.releaseLabel = options.releaseLabel || "";
-    options.refreshLabel = options.refreshLabel || "";
     options.onRefresh = options.onRefresh || void 0;
     container = document.getElementById(container);
     PullToRefresh = (function() {
@@ -724,6 +721,7 @@
         this.onPull = __bind(this.onPull, this);
         PULLREFRESH = "<div class=\"pulltorefresh\">\n<span class=\"icon down-big\"></span>\n</div>";
         this.breakpoint = 50;
+        this.pullHeight = 490;
         this.container = container;
         this.pullrefresh = $(PULLREFRESH)[0];
         $(this.container).prepend(this.pullrefresh);
@@ -744,6 +742,9 @@
         Hammer(this.container).on("dragdown", this.onPull);
         Hammer(this.container).on("release", (function(_this) {
           return function() {
+            if (!_this._dragged_down) {
+              return;
+            }
             cancelAnimationFrame(_this._anim);
             if (_this._slidedown_height >= _this.breakpoint) {
               if (_this.options.onRefresh) {
@@ -779,14 +780,14 @@
       };
 
       PullToRefresh.prototype.setHeight = function(height) {
-        height -= 495;
+        height -= this.pullHeight;
         return this._trasformPullrefresh(height);
       };
 
       PullToRefresh.prototype.animatePullrefreshTransform = function() {
         this.height = parseInt(this.height);
         this._trasformPullrefresh(this.height);
-        if (this.height > -445) {
+        if (this.height > -(this.pullHeight - this.breakpoint)) {
           return setTimeout((function(_this) {
             return function() {
               _this.height -= 3;
@@ -841,7 +842,7 @@
       };
 
       PullToRefresh.prototype.updateHeight = function() {
-        this.height = this._slidedown_height - 495;
+        this.height = this._slidedown_height - this.pullHeight;
         this._trasformPullrefresh(this.height);
         return this._anim = requestAnimationFrame(this.updateHeight);
       };

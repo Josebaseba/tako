@@ -22,11 +22,8 @@ do ->
 
 
 Tako.Pull_Refresh = (container, options={})->
-  options.pullLabel      = options.pullLabel or ""
-  options.releaseLabel   = options.releaseLabel or ""
-  options.refreshLabel   = options.refreshLabel or ""
-  options.onRefresh      = options.onRefresh or undefined
-  container              = document.getElementById container
+  options.onRefresh = options.onRefresh or undefined
+  container         = document.getElementById container
 
   class PullToRefresh
     constructor: (container, @options) ->
@@ -35,6 +32,7 @@ Tako.Pull_Refresh = (container, options={})->
         </div>"""
 
       @breakpoint = 50
+      @pullHeight = 490
       @container = container
       @pullrefresh = $(PULLREFRESH)[0]
       $(@container).prepend @pullrefresh
@@ -50,7 +48,7 @@ Tako.Pull_Refresh = (container, options={})->
 
       Hammer(@container).on "dragdown", @onPull
       Hammer(@container).on "release", =>
-        #return unless @_dragged_down
+        return unless @_dragged_down
         cancelAnimationFrame @_anim
         if @_slidedown_height >= @breakpoint
           if @options.onRefresh
@@ -73,13 +71,13 @@ Tako.Pull_Refresh = (container, options={})->
       @_slidedown_height = ev.gesture.deltaY * 0.4
 
     setHeight: (height) =>
-      height -= 495
+      height -= @pullHeight
       @_trasformPullrefresh height
 
     animatePullrefreshTransform: =>
       @height = parseInt(@height);
       @_trasformPullrefresh @height
-      if(@height > -445)
+      if(@height > -(@pullHeight - @breakpoint))
         setTimeout =>
           @height -= 3
           do @animatePullrefreshTransform;
@@ -119,7 +117,7 @@ Tako.Pull_Refresh = (container, options={})->
       @refreshing = false
 
     updateHeight: =>
-      @height = @_slidedown_height - 495
+      @height = @_slidedown_height - @pullHeight
       @_trasformPullrefresh @height
       @_anim = requestAnimationFrame @updateHeight
 

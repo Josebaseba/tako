@@ -11,7 +11,7 @@ $(function(){
       window.puller = Tako.Pull_Refresh("main", {onRefresh:function(){
           setTimeout(function(){
               console.log("Refresh finished");
-              puller.hide()}, 1000);
+              puller.hide()}, 2000);
       }});
   });
 

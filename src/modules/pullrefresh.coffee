@@ -22,19 +22,19 @@ do ->
 
 
 Tako.Pull_Refresh = (container, options={})->
-  options.pullLabel      = options.pullLabel or "Pull to refresh"
-  options.releaseLabel   = options.releaseLabel or "Release to refresh"
-  options.refreshLabel   = options.refreshLabel or "Loading..."
+  options.pullLabel      = options.pullLabel or ""
+  options.releaseLabel   = options.releaseLabel or ""
+  options.refreshLabel   = options.refreshLabel or ""
   options.onRefresh      = options.onRefresh or undefined
   container              = document.getElementById container
 
   class PullToRefresh
     constructor: (container, @options) ->
       PULLREFRESH = """<div class="pulltorefresh">
-        <span class="icon down-big"></span><span class="text">#{@options.pullLabel}</span>
+        <span class="icon down-big"></span>
         </div>"""
 
-      @breakpoint = 90
+      @breakpoint = 50
       @container = container
       @pullrefresh = $(PULLREFRESH)[0]
       $(@container).prepend @pullrefresh
@@ -50,7 +50,7 @@ Tako.Pull_Refresh = (container, options={})->
 
       Hammer(@container).on "dragdown", @onPull
       Hammer(@container).on "release", =>
-        return unless @_dragged_down
+        #return unless @_dragged_down
         cancelAnimationFrame @_anim
         if @_slidedown_height >= @breakpoint
           if @options.onRefresh
@@ -73,18 +73,25 @@ Tako.Pull_Refresh = (container, options={})->
       @_slidedown_height = ev.gesture.deltaY * 0.4
 
     setHeight: (height) =>
-      height -= 511
-      @pullrefresh.style.transform = "translate(0, #{height}px)"
-      @pullrefresh.style.webkitTransform = "translate(0, #{height}px)"
-      @pullrefresh.style.mozTransform = "translate(0, #{height}px)"
-      @pullrefresh.style.msTransform = "translate(0, #{height}px)"
-      @pullrefresh.style.marginBottom = "#{height}px"
-      @pullrefresh.style.oTransform = "translate(0, #{height}px)"
+      height -= 495
+      @_trasformPullrefresh height
+
+    animatePullrefreshTransform: =>
+      @height = parseInt(@height);
+      @_trasformPullrefresh @height
+      if(@height > -445)
+        setTimeout =>
+          @height -= 3
+          do @animatePullrefreshTransform;
+      else
+        do @finishOnRefresh
 
     onRefresh: ->
-      @icon[0].className = "icon spin6 animated"
+      @icon[0].className = "icon spin4 animated"
       @text.html @options.refreshLabel
-      @setHeight @breakpoint - 10
+      do @animatePullrefreshTransform
+
+    finishOnRefresh: ->
       @refreshing = true
       @icon.removeClass("rotated")
       @options.onRefresh.call @options.onRefresh
@@ -112,15 +119,16 @@ Tako.Pull_Refresh = (container, options={})->
       @refreshing = false
 
     updateHeight: =>
-      height = @_slidedown_height - 511
+      @height = @_slidedown_height - 495
+      @_trasformPullrefresh @height
+      @_anim = requestAnimationFrame @updateHeight
+
+    _trasformPullrefresh: (height) ->
       @pullrefresh.style.transform = "translate(0, #{height}px)"
       @pullrefresh.style.webkitTransform = "translate(0, #{height}px)"
       @pullrefresh.style.mozTransform = "translate(0, #{height}px)"
       @pullrefresh.style.msTransform = "translate(0, #{height}px)"
       @pullrefresh.style.marginBottom = "#{height}px"
       @pullrefresh.style.oTransform = "translate(0, #{height}px)"
-      @_anim = requestAnimationFrame @updateHeight
-
-
 
   new PullToRefresh(container, options)

@@ -1,5 +1,5 @@
 /* app v1.1.2 - 20/05/2014
-   http://takojs.com
+   http://josebaseba.com
    Copyright (c) 2014 Joseba Legarreta | @josebaseba - Under MIT License */
 (function() {
   var Select, Tako, _fallback,
@@ -708,9 +708,9 @@
     if (options == null) {
       options = {};
     }
-    options.pullLabel = options.pullLabel || "Pull to refresh";
-    options.releaseLabel = options.releaseLabel || "Release to refresh";
-    options.refreshLabel = options.refreshLabel || "Loading...";
+    options.pullLabel = options.pullLabel || "";
+    options.releaseLabel = options.releaseLabel || "";
+    options.refreshLabel = options.refreshLabel || "";
     options.onRefresh = options.onRefresh || void 0;
     container = document.getElementById(container);
     PullToRefresh = (function() {
@@ -719,10 +719,11 @@
         this.options = options;
         this.updateHeight = __bind(this.updateHeight, this);
         this.hide = __bind(this.hide, this);
+        this.animatePullrefreshTransform = __bind(this.animatePullrefreshTransform, this);
         this.setHeight = __bind(this.setHeight, this);
         this.onPull = __bind(this.onPull, this);
-        PULLREFRESH = "<div class=\"pulltorefresh\">\n<span class=\"icon down-big\"></span><span class=\"text\">" + this.options.pullLabel + "</span>\n</div>";
-        this.breakpoint = 90;
+        PULLREFRESH = "<div class=\"pulltorefresh\">\n<span class=\"icon down-big\"></span>\n</div>";
+        this.breakpoint = 50;
         this.container = container;
         this.pullrefresh = $(PULLREFRESH)[0];
         $(this.container).prepend(this.pullrefresh);
@@ -743,9 +744,6 @@
         Hammer(this.container).on("dragdown", this.onPull);
         Hammer(this.container).on("release", (function(_this) {
           return function() {
-            if (!_this._dragged_down) {
-              return;
-            }
             cancelAnimationFrame(_this._anim);
             if (_this._slidedown_height >= _this.breakpoint) {
               if (_this.options.onRefresh) {
@@ -781,19 +779,32 @@
       };
 
       PullToRefresh.prototype.setHeight = function(height) {
-        height -= 511;
-        this.pullrefresh.style.transform = "translate(0, " + height + "px)";
-        this.pullrefresh.style.webkitTransform = "translate(0, " + height + "px)";
-        this.pullrefresh.style.mozTransform = "translate(0, " + height + "px)";
-        this.pullrefresh.style.msTransform = "translate(0, " + height + "px)";
-        this.pullrefresh.style.marginBottom = "" + height + "px";
-        return this.pullrefresh.style.oTransform = "translate(0, " + height + "px)";
+        height -= 495;
+        return this._trasformPullrefresh(height);
+      };
+
+      PullToRefresh.prototype.animatePullrefreshTransform = function() {
+        this.height = parseInt(this.height);
+        this._trasformPullrefresh(this.height);
+        if (this.height > -445) {
+          return setTimeout((function(_this) {
+            return function() {
+              _this.height -= 3;
+              return _this.animatePullrefreshTransform();
+            };
+          })(this));
+        } else {
+          return this.finishOnRefresh();
+        }
       };
 
       PullToRefresh.prototype.onRefresh = function() {
-        this.icon[0].className = "icon spin6 animated";
+        this.icon[0].className = "icon spin4 animated";
         this.text.html(this.options.refreshLabel);
-        this.setHeight(this.breakpoint - 10);
+        return this.animatePullrefreshTransform();
+      };
+
+      PullToRefresh.prototype.finishOnRefresh = function() {
         this.refreshing = true;
         this.icon.removeClass("rotated");
         return this.options.onRefresh.call(this.options.onRefresh);
@@ -830,15 +841,18 @@
       };
 
       PullToRefresh.prototype.updateHeight = function() {
-        var height;
-        height = this._slidedown_height - 511;
+        this.height = this._slidedown_height - 495;
+        this._trasformPullrefresh(this.height);
+        return this._anim = requestAnimationFrame(this.updateHeight);
+      };
+
+      PullToRefresh.prototype._trasformPullrefresh = function(height) {
         this.pullrefresh.style.transform = "translate(0, " + height + "px)";
         this.pullrefresh.style.webkitTransform = "translate(0, " + height + "px)";
         this.pullrefresh.style.mozTransform = "translate(0, " + height + "px)";
         this.pullrefresh.style.msTransform = "translate(0, " + height + "px)";
         this.pullrefresh.style.marginBottom = "" + height + "px";
-        this.pullrefresh.style.oTransform = "translate(0, " + height + "px)";
-        return this._anim = requestAnimationFrame(this.updateHeight);
+        return this.pullrefresh.style.oTransform = "translate(0, " + height + "px)";
       };
 
       return PullToRefresh;

@@ -46,4 +46,10 @@ $(function(){
       setTimeout(function(){progress.percent(100)},4500);
   });
 
+  $("#main").hide();
+  //Tako.Notification.loading("Loading", 2, function(){console.log("LOADING CB");})
+  setTimeout(function(){
+    $("#main").show();
+  }, 1000);
+
 });

@@ -16,53 +16,109 @@
 
     <link rel="stylesheet" href="stylesheets/tako.css">
     <link rel="stylesheet" href="stylesheets/tako.theme.css">
+    <link rel="stylesheet" href="stylesheets/custom.css">
 </head>
 
 <body>
     <aside class="full">
       <header>
-          <h1>Tako trial</h1>
+        <h1>Tako trial</h1>
       </header>
       <ul>
-          <li class="icon box" data-section="forms">Forms <span class="counter">125</span></li>
-          <li class="icon box" data-section="lists">Lists</li>
-          <li data-section="buttons"><img class="small" src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Buttons</span></li>
-          <li data-section="layouts"><img src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Layouts</span></li>
-          <li data-section="notifications"><img class="big" src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Notifications</span></li>
-          <li class="" data-section="colors">Colors</li>
-          <li class="" data-article="article_2">Asynchronous Article</li>
+        <li class="icon resize-vertical" data-section="main">Pull&Refresh</li>
+        <li class="icon box" data-section="forms">Forms <span class="counter">125</span></li>
+        <li class="icon box" data-section="lists">Lists</li>
+        <li data-section="buttons"><img class="small" src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Buttons</span></li>
+        <li data-section="layouts"><img src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Layouts</span></li>
+        <li data-section="notifications"><img class="big" src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Notifications</span></li>
+        <li class="" data-section="colors">Colors</li>
+        <li class="" data-article="article_2">Asynchronous Article</li>
       </ul>
     </aside>
 
     <article id="article_1">
         <header>
             <nav class="left">
-                <button class="icon ellipsis-vert" data-action="aside">Aside<span class="counter">5</span></button>
+              <a class="icon menu button" data-action="aside"></a>
             </nav>
             <nav class="right">
-                <button  class="button" data-action="aside" data-visible="colors"><img src="http://www.takojs.com/assets/img/tako-logo.png" alt=""><span>Aside</span></button>
+              <a class="icon bell button" data-action="notifications"></a>
             </nav>
-            <h1>TaKo!!</h1>
+            <h1>TaKo v2!!</h1>
         </header>
-        <!-- <footer>
-          <nav>
-            <button data-section="main" class="icon check">Forms</button>
-            <button data-section="buttons" class="icon tasks">Buttons</button>
-            <button data-section="lists" class="icon list">Lists</button>
-          </nav>
-        </footer> -->
-        <section id="main">
-            <p>This is an example of pull and refresh</p>
-            <p data-device="phone">This is only seen in phone mode</p>
-            <p data-device="tablet">This is only seen in tablet mode</p>
-            <p data-os="android">This is only seen in android</p>
-            <p data-os="ios">This is only seen in ios</p>
-            <p data-os="firefoxos">This is only seen in firefoxos</p>
-            <p data-os="wp">This is only seen in windows phone</p>
-            <p data-browser="chrome">This is only seen in chrome</p>
-            <p data-browser="safari">This is only seen in safari</p>
-            <p data-browser="firefox">This is only seen in firefox</p>
-            <p data-browser="ie">This is only seen in Internet Explorer</p>
+       <section id="main">
+            <div class="post">
+              <img src="/assets/img/bb.gif" class="content">
+              <div class="line">
+                <img src="/assets/img/profile.jpg" class="rounded small two_column">
+                <div class="seven_column post-info">
+                  <span class="nickname">Josebaseba</span>
+                  <span class="text description">
+                    Comentario de debajo del gif, descripción de la imagen que se ve. Límite de 160 carácteres más o menos...
+                  </span>
+                  <hr>
+                  <span class="text">A <span class="likes">67</span> le gusta y <span class="rt">322</span> RT's</span>
+                  <hr>
+                  <span class="button rounded small icon smile"></span>
+                  <span class="button rounded small icon comment-empty"></span>
+                  <span class="button rounded small icon up-big"></span>
+                </div>
+              </div>
+            </div>
+            <div class="post">
+              <img src="/assets/img/chuck.gif" class="content">
+              <div class="line">
+                <img src="/assets/img/profile.jpg" class="rounded small two_column">
+                <div class="seven_column post-info">
+                  <span class="nickname">Josebaseba</span>
+                  <span class="text description">
+                    Comentario de debajo del gif, descripción de la imagen que se ve. Límite de 160 carácteres más o menos...
+                  </span>
+                  <hr>
+                  <span class="text">A <span class="likes">1</span> le gusta y <span class="rt">3</span> RT's</span>
+                  <hr>
+                  <span class="button rounded small icon smile"></span>
+                  <span class="button rounded small icon comment-empty"></span>
+                  <span class="button rounded small icon up-big"></span>
+                </div>
+              </div>
+            </div>
+            <div class="post">
+              <img src="/assets/img/kill.gif" class="content">
+              <div class="line">
+                <img src="/assets/img/profile.jpg" class="rounded small two_column">
+                <div class="seven_column post-info">
+                  <span class="nickname">Josebaseba</span>
+                  <span class="text description">
+                    Comentario de debajo del gif, descripción de la imagen que se ve. Límite de 160 carácteres más o menos...
+                  </span>
+                  <hr>
+                  <span class="text">A <span class="likes">34</span> le gusta y <span class="rt">13</span> RT's</span>
+                  <hr>
+                  <span class="button rounded small icon smile"></span>
+                  <span class="button rounded small icon comment-empty"></span>
+                  <span class="button rounded small icon up-big"></span>
+                </div>
+              </div>
+            </div>
+            <div class="post">
+              <img src="/assets/img/prog.gif" class="content">
+              <div class="line">
+                <img src="/assets/img/profile.jpg" class="rounded small two_column">
+                <div class="seven_column post-info">
+                  <span class="nickname">Josebaseba</span>
+                  <span class="text description">
+                    Comentario de debajo del gif, descripción de la imagen que se ve. Límite de 160 carácteres más o menos...
+                  </span>
+                  <hr>
+                  <span class="text">A <span class="likes">10</span> le gusta y <span class="rt">3</span> RT's</span>
+                  <hr>
+                  <span class="button rounded small icon smile"></span>
+                  <span class="button rounded small icon comment-empty"></span>
+                  <span class="button rounded small icon up-big"></span>
+                </div>
+              </div>
+            </div>
         </section>
         <section id="buttons" class="indented">
             <p>

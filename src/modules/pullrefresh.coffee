@@ -51,7 +51,7 @@ Tako.Pull_Refresh = (container, options={})->
         return unless @_dragged_down
         cancelAnimationFrame @_anim
         if @_slidedown_height >= @breakpoint and @options.onRefresh
-          return do @onRefresh
+          do @onRefresh
         else
           do @hide
 

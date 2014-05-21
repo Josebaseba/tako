@@ -1,7 +1,7 @@
 Tako.Notification = do (TK = Tako) ->
   active = false
 
-  notification = $ """<div data-element="notification"><div></div</div>"""
+  notification = $ """<div data-element="notification"><div></div></div>"""
   notification_window = $ """<article class="window"></article>"""
 
   notification.find("div").append notification_window
@@ -24,23 +24,15 @@ Tako.Notification = do (TK = Tako) ->
       icon = args[0]
       cb   = args[1]
     else
-      icon = "spin6"
+      icon = "spin4"
       cb = args[0]
     html = ""
-    classes = "loading center not_clickable"
-    if title?
-      html = """
-      <header>
-          <span>#{title}</span>
-      </header>"""
-    else
-      classes += " squared"
     html += """
-    <section>
-      <span class="icon #{icon} animated"></span>
-    </section>
+      <div id="loading-block" style="position: absolute; top: 0;" class="loading center not_clickable">
+        <span class="icon #{icon} animated show-loading"></span>
+      </div>
     """
-    _show html, classes, time_out, cb
+    _showLoading html, null, time_out, cb
 
   progress = (icon, title, content, time_out, cb) ->
     html = """<header class="#{if icon? then 'align-left' else 'center'}">"""
@@ -127,12 +119,11 @@ Tako.Notification = do (TK = Tako) ->
     </section>
     """
 
-
-
   _show = (html, classes, time_out, cb) ->
     if not active
       active = true
       do notification_window.removeClass
+      notification.find("#loading-block").remove()
       notification_window.addClass "window " + classes
       notification_window.html html
       notification.addClass "show"
@@ -147,9 +138,25 @@ Tako.Notification = do (TK = Tako) ->
         _show html, timeout, cb
       do hide
 
+  _showLoading = (html, classes, time_out, cb) ->
+    if not active
+      active = true
+      notification.append html
+      notification.addClass "show"
+      callback = cb if cb?
+      if time_out?
+        timeout = setTimeout hide, time_out*1000
+    else
+      original_cb = callback
+      callback = ->
+        do original_cb if original_cb?
+        _show html, timeout, cb
+      do hide
+
   _ontap = (ev) ->
     do ev.preventDefault
     do ev.stopPropagation
+    if $(ev.currentTarget).find("#loading-block").length then return null
     unless notification_window.hasClass "not_clickable"
       active = false
       clearTimeout timeout

@@ -40,10 +40,10 @@ $(function(){
 
   Tako.init({"articles": ["article2.html"]});
   $("#show_success").bind("tap", function(){
-      Tako.Notification.success("ok", "Success!!","Everything worked fine", null, function(){console.log("SUCCESS CB");})
+      Tako.Notification.success("ok", "Success!!","Everything worked fine", 5, function(){console.log("SUCCESS CB");})
   });
   $("#show_error").bind("tap", function(){
-      Tako.Notification.error("deny", "Error!!","Something went wrong", null, function(){console.log("ERROR CB");})
+      Tako.Notification.error("deny", "Error!!","Something went wrong", 5, function(){console.log("ERROR CB");})
   });
   $("#show_confirm").bind("tap", function(){
       Tako.Notification.confirm("help-circled", "Question", "Do you like TaKos", "Of course", "Not much", function(result){
@@ -60,7 +60,7 @@ $(function(){
       Tako.Notification.custom("Custom", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tempus auctor convallis. Aliquam eget ipsum a velit pulvinar elementum vitae non dolor. Nullam dui metus, tincidunt non dolor eu, laoreet auctor tellus. Suspendisse vestibulum scelerisque nibh non scelerisque. Cras eget lobortis orci. Vestibulum ultrices enim mattis fermentum tristique. Nunc ultricies feugiat tellus, ut facilisis est dignissim nec. Vivamus molestie sem vel euismod vestibulum.", true, "", null, function(){console.log("Fin de custom")});
   });
   $("#show_loading").bind("tap", function(){
-      Tako.Notification.loading("Loading", 5, function(){console.log("LOADING CB");})
+      Tako.Notification.loading("Loading", 3, function(){console.log("LOADING CB");})
   });
   $("#show_progress").bind("tap", function(){
       var progress = Tako.Notification.progress("spin1 animated", "Downloading", "Please wait until your download is completed");
@@ -70,9 +70,10 @@ $(function(){
   });
 
   $("#main").hide();
-  //Tako.Notification.loading("Loading", 2, function(){console.log("LOADING CB");})
+  Tako.Notification.loading("Loading")
   setTimeout(function(){
     $("#main").show();
-  }, 1000);
+    Tako.Notification.hide();
+  }, 1200);
 
 });

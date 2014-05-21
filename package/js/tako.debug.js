@@ -483,9 +483,9 @@
   };
 
   Tako.Notification = (function(TK) {
-    var active, callback, confirm, custom, error, hide, loading, notification, notification_window, progress, success, timeout, _close, _hide, _iconHtml, _ontap, _show;
+    var active, callback, confirm, custom, error, hide, loading, notification, notification_window, progress, success, timeout, _close, _hide, _iconHtml, _ontap, _show, _showLoading;
     active = false;
-    notification = $("<div data-element=\"notification\"><div></div</div>");
+    notification = $("<div data-element=\"notification\"><div></div></div>");
     notification_window = $("<article class=\"window\"></article>");
     notification.find("div").append(notification_window);
     $("body").append(notification);
@@ -508,24 +508,18 @@
       return _show(html, "error center downwards", time_out, cb);
     };
     loading = function() {
-      var args, cb, classes, html, icon, time_out, title;
+      var args, cb, html, icon, time_out, title;
       title = arguments[0], time_out = arguments[1], args = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
       if ((args[0] != null) && typeof args[0] === "string") {
         icon = args[0];
         cb = args[1];
       } else {
-        icon = "spin6";
+        icon = "spin4";
         cb = args[0];
       }
       html = "";
-      classes = "loading center not_clickable";
-      if (title != null) {
-        html = "<header>\n    <span>" + title + "</span>\n</header>";
-      } else {
-        classes += " squared";
-      }
-      html += "<section>\n  <span class=\"icon " + icon + " animated\"></span>\n</section>";
-      return _show(html, classes, time_out, cb);
+      html += "<div id=\"loading-block\" style=\"position: absolute; top: 0;\" class=\"loading center not_clickable\">\n  <span class=\"icon " + icon + " animated show-loading\"></span>\n</div>";
+      return _showLoading(html, null, time_out, cb);
     };
     progress = function(icon, title, content, time_out, cb) {
       var html;
@@ -610,6 +604,7 @@
       if (!active) {
         active = true;
         notification_window.removeClass();
+        notification.find("#loading-block").remove();
         notification_window.addClass("window " + classes);
         notification_window.html(html);
         notification.addClass("show");
@@ -633,9 +628,35 @@
         return hide();
       }
     };
+    _showLoading = function(html, classes, time_out, cb) {
+      var original_cb;
+      if (!active) {
+        active = true;
+        notification.append(html);
+        notification.addClass("show");
+        if (cb != null) {
+          callback = cb;
+        }
+        if (time_out != null) {
+          return timeout = setTimeout(hide, time_out * 1000);
+        }
+      } else {
+        original_cb = callback;
+        callback = function() {
+          if (original_cb != null) {
+            original_cb();
+          }
+          return _show(html, timeout, cb);
+        };
+        return hide();
+      }
+    };
     _ontap = function(ev) {
       ev.preventDefault();
       ev.stopPropagation();
+      if ($(ev.currentTarget).find("#loading-block").length) {
+        return null;
+      }
       if (!notification_window.hasClass("not_clickable")) {
         active = false;
         clearTimeout(timeout);

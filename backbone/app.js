@@ -7,11 +7,34 @@ $(function(){
   console.log("=========================");
 
   Tako.onReady(function(){
-      console.log("LOADED");
+      firstTime = true;
       window.puller = Tako.Pull_Refresh("main", {onRefresh:function(){
-          setTimeout(function(){
-              console.log("Refresh finished");
-              puller.hide()}, 2000);
+        setTimeout(function(){
+          if(firstTime){
+            $("div#posts").prepend('\
+              <div class="post">\
+              <img src="/assets/img/jake.gif" class="content">\
+              <div class="line">\
+                <img src="/assets/img/profile.jpg" class="rounded small two_column">\
+                <div class="seven_column post-info">\
+                  <span class="nickname">Josebaseba</span>\
+                  <span class="text description">\
+                    Comentario de debajo del gif, descripción de la imagen que se ve. Límite de 160 carácteres más o menos...\
+                  </span>\
+                  <hr>\
+                  <span class="text">A <span class="likes">67</span> le gusta y <span class="rt">322</span> RT\'s</span>\
+                  <hr>\
+                  <span class="button rounded small icon smile"></span>\
+                  <span class="button rounded small icon comment-empty"></span>\
+                  <span class="button rounded small icon up-big"></span>\
+                </div>\
+              </div>\
+            </div>\
+            ');
+            firstTime = false;
+          }
+          puller.hide();
+        }, 2000);
       }});
   });
 
